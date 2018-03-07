@@ -2,7 +2,11 @@
 title: "ES207- Lab4"
 author: "Christiana Ade"
 date: "March 7, 2018"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r, read packages}
@@ -683,11 +687,6 @@ newloc <- loc %>% filter(!str_detect(Address, 'Location Approximate|Address Not 
 
 ```{r}
 
-daily <- o3.filelist %>%
-  rbindlist() %>%
-  group_by(site = as.factor(site), date) %>%
-  summarize(o3 = mean(obs, na.rm = TRUE))
-
 daily.site <- daily %>%
   left_join(loc, by = "site")
 
@@ -705,24 +704,20 @@ daily.site
 
 11. Write a function to calculate the annual mean, median, max and min of all sites that have “San” or “Santa” in their name.
 
-```{r}
-
-sanFilter <- loc %>% filter(str_detect(`Site Name`,"San"))
-
-myStats <- function(x){
-  mymean= mean(x)
-  mymedian = median(x)
-  mymax = max(x)
-  mymin = min(x)
-  return(tibble(dataMean = mymean, dataMedian = mymedian,dataMax = mymax, datamin = mymin))
-}
-
-newloc <- loc %>% filter(!str_detect(Address, 'Location Approximate|Address Not Known')) %>%
-  # some of zipcodes have NA, remove those
-  filter(!str_detect(`Zip Code`,"NA")
-siteNames <- unique(loc$`Site Name`)
-san <- str_subset(siteNames, "San")
-length(san)
+```{r, message=F}
+#daily.site2 <- daily.site
+# myStats <- function(x){
+#   mymean= mean(x)
+#   mymedian = median(x)
+#   mymax = max(x)
+#   mymin = min(x)
+#   #return(tibble(dataMean = mymean, dataMedian = mymedian,dataMax = mymax, datamin = mymin))
+# }
+# 
+# sanFilter <- daily.site %>% filter(str_detect(`Site Name`,"San")) %>%
+#   mutate(year = format(date, "%YYYY")) %>% 
+#   group_by( Site = as.factor(Site), year) %>%
+#   summarize(ozone = mean(o3, na.rm = TRUE))
 
 ```
 
@@ -732,6 +727,7 @@ length(san)
 ```{r}
 # annual daily mean
 # is merced county
+# would have to filter the data first 
 
 ```
 
